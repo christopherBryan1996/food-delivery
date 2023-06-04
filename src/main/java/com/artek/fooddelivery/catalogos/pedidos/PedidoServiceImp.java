@@ -46,7 +46,7 @@ public class PedidoServiceImp implements PedidoService {
 		
 		Optional<PedidoEntity > pedidoEntity = pedidoRepository.findById(id);
 		
-		return pedidoEntity.get().isHabilitado();
+		return pedidoEntity.isPresent()?pedidoEntity.get().isHabilitado():null;
 	}
 
 	@Override

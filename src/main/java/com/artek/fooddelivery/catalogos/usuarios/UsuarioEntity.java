@@ -39,7 +39,7 @@ public class UsuarioEntity implements Serializable {
 	@Column(name = "habilitado")
 	private boolean habilitado;
 	
-	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<PedidoEntity> pedido;
 	
 	public UsuarioEntity() {

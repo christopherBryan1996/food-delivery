@@ -6,11 +6,12 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 
+
 @Component
 public class ProductoConverter {
 
 
-	public ProductoEntity productoModelToProductoEntity(ProductoModel productoModel, List<String> relations) {
+	public ProductoEntity productoModelToProductoEntity(ProductoModel productoModel) {
 
 		ProductoEntity productoEntity = new ProductoEntity();
 
@@ -19,16 +20,15 @@ public class ProductoConverter {
 		productoEntity.setTipo(productoModel.getTipo());
 		productoEntity.setPrecio(productoModel.getPrecio());
 		productoEntity.setHabilitado(productoModel.isHabilitado());
+		productoEntity.setImage(productoModel.getImage());
 
-		if (relations.contains("tienda")) {
-
-		}
+		
 		
 
 		return productoEntity;
 	}
 
-	public ProductoModel productEntityToProductoModel(ProductoEntity productEntity, List<String> relations) {
+	public ProductoModel productEntityToProductoModel(ProductoEntity productEntity) {
 
 		ProductoModel productoModel = new ProductoModel();
 
@@ -37,32 +37,31 @@ public class ProductoConverter {
 		productoModel.setTipo(productEntity.getTipo());
 		productoModel.setPrecio(productEntity.getPrecio());
 		productoModel.setHabilitado(productEntity.isHabilitado());
+		productoModel.setImage(productEntity.getImage());
 
-		if (relations.contains("tienda")) {
-
-		}
+		
 		
 
 		return productoModel;
 	}
 	
-	public List<ProductoEntity> productoModelToProductoEntity(List<ProductoModel> productoModelList, List<String> relations) {
+	public List<ProductoEntity> productoModelToProductoEntity(List<ProductoModel> productoModelList) {
 
 		List<ProductoEntity> models = new ArrayList<>();
 		
 		for(ProductoModel productoModel : productoModelList) {
-			models.add(this.productoModelToProductoEntity(productoModel, relations));
+			models.add(this.productoModelToProductoEntity(productoModel));
 		}
 		
 		return models;
 	}
 	
-	public List<ProductoModel> productEntityToProductoModel(List<ProductoEntity> productEntityList, List<String> relations) {
+	public List<ProductoModel> productEntityToProductoModel(List<ProductoEntity> productEntityList) {
 
 		List<ProductoModel> models = new ArrayList<>();
 		
 		for(ProductoEntity productoEntity : productEntityList) {
-			models.add(this.productEntityToProductoModel(productoEntity, relations));
+			models.add(this.productEntityToProductoModel(productoEntity));
 		}
 		
 		return models;

@@ -1,6 +1,5 @@
 package com.artek.fooddelivery.catalogos.pedidos;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,20 +23,20 @@ public class PedidoRestController {
 	@PostMapping("/pedidos")
 	public ResponseEntity<Object> create(@RequestBody PedidoModel pedidoModel) {
 
-		PedidoEntity pedidoEntity = pedidoConverter.pedidoModelToPedidoEntity(pedidoModel, Arrays.asList());
+		PedidoEntity pedidoEntity = pedidoConverter.pedidoModelToPedidoEntity(pedidoModel);
 
 		pedidoEntity.setHabilitado(true);
-		pedidoModel = pedidoConverter.pedidoEntityToPedidoModel(pedidoService.create(pedidoEntity), Arrays.asList());
+		pedidoModel = pedidoConverter.pedidoEntityToPedidoModel(pedidoService.create(pedidoEntity));
 
 		return new ResponseEntity<>(pedidoModel, HttpStatus.CREATED);
 	}
 
 	@PutMapping("pedidos/{id}")
 	public ResponseEntity<Object> update(@RequestBody PedidoModel pedidoModel, @PathVariable Long id) {
-		PedidoEntity pedidoEntity = pedidoConverter.pedidoModelToPedidoEntity(pedidoModel, Arrays.asList());
+		PedidoEntity pedidoEntity = pedidoConverter.pedidoModelToPedidoEntity(pedidoModel);
 		pedidoEntity.setId(id);
 		pedidoEntity.setHabilitado(true);
-		pedidoModel = pedidoConverter.pedidoEntityToPedidoModel(pedidoService.update(pedidoEntity), Arrays.asList());
+		pedidoModel = pedidoConverter.pedidoEntityToPedidoModel(pedidoService.update(pedidoEntity));
 
 		return new ResponseEntity<>(pedidoModel, HttpStatus.ACCEPTED);
 	}
@@ -51,7 +50,7 @@ public class PedidoRestController {
 			return new ResponseEntity<Object>("No existe el id: " + id, HttpStatus.ACCEPTED);
 		}
 
-		PedidoModel pedidoModel = pedidoConverter.pedidoEntityToPedidoModel(pedidoEntity, Arrays.asList());
+		PedidoModel pedidoModel = pedidoConverter.pedidoEntityToPedidoModel(pedidoEntity);
 
 		return new ResponseEntity<Object>(pedidoModel, HttpStatus.ACCEPTED);
 	}
@@ -69,7 +68,7 @@ public class PedidoRestController {
 	}
 	
 	@GetMapping("/pedidos")
-	public ResponseEntity<Object> List(){
+	public ResponseEntity<Object> list(){
 		
 		java.util.List<PedidoEntity> pedidoEntities = pedidoService.list();
 		

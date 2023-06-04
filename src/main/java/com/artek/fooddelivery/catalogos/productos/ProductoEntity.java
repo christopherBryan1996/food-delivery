@@ -28,6 +28,9 @@ public class ProductoEntity implements Serializable {
 	@Column(name = "precio")
 	private double precio;
 	
+	@Column(name="image")
+	private String image;
+	
 	@ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
@@ -115,6 +118,14 @@ public class ProductoEntity implements Serializable {
 
 	public void setPedido(List<PedidoEntity> pedido) {
 		this.pedido = pedido;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 	
 }

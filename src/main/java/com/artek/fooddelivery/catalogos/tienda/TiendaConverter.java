@@ -3,10 +3,15 @@ package com.artek.fooddelivery.catalogos.tienda;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.artek.fooddelivery.catalogos.productos.ProductoConverter;
 
 @Component
 public class TiendaConverter {
+	@Autowired
+	private ProductoConverter productoConverter;
 
 	public TiendaEntity tiendaModelToTiendaEntity(TiendaModel tiendaModel, List<String> relations) {
 		TiendaEntity tiendaEntity = new TiendaEntity();
@@ -14,6 +19,7 @@ public class TiendaConverter {
 		tiendaEntity.setNombre(tiendaModel.getNombre());
 		tiendaEntity.setTipo(tiendaModel.getTipo());
 		tiendaEntity.setHabilitado(tiendaModel.isHabilitado());
+		tiendaEntity.setProducto(productoConverter.productoModelToProductoEntity(tiendaModel.getProducto()));
 
 		return tiendaEntity;
 	}

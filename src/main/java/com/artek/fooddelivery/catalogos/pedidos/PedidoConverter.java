@@ -19,7 +19,7 @@ public class PedidoConverter {
 	@Autowired
 	private ProductoConverter productoConverter;
 
-	public PedidoEntity pedidoModelToPedidoEntity(PedidoModel pedidoModel, List<String> relations) {
+	public PedidoEntity pedidoModelToPedidoEntity(PedidoModel pedidoModel) {
 
 		PedidoEntity pedidoEntity = new PedidoEntity();
 		pedidoEntity.setId(pedidoModel.getId());
@@ -28,12 +28,12 @@ public class PedidoConverter {
 		pedidoEntity.setHabilitado(pedidoModel.isHabilitado());
 		pedidoEntity.setUsuario(
 				usuarioConverter.usuarioModelToUsuarioEntity(pedidoModel.getUsuario(), Arrays.asList()));
-		pedidoEntity.setProducto(productoConverter.productoModelToProductoEntity(pedidoModel.getProducto(), Arrays.asList()));
+		pedidoEntity.setProducto(productoConverter.productoModelToProductoEntity(pedidoModel.getProducto()));
 		
 		return pedidoEntity;
 	}
 
-	public PedidoModel pedidoEntityToPedidoModel(PedidoEntity pedidoEntity, List<String> relations) {
+	public PedidoModel pedidoEntityToPedidoModel(PedidoEntity pedidoEntity) {
 
 		PedidoModel pedidoModel = new PedidoModel();
 		pedidoModel.setId(pedidoEntity.getId());
@@ -41,28 +41,28 @@ public class PedidoConverter {
 		pedidoModel.setTypoPago(pedidoEntity.getTypoPago());
 		pedidoModel.setHabilitado(pedidoEntity.isHabilitado());
 		pedidoModel.setUsuario(
-				usuarioConverter.usuarioEntityToUsuarioModel(pedidoEntity.getUsuario(), relations));
-		pedidoModel.setProducto(productoConverter.productEntityToProductoModel(pedidoEntity.getProducto(), Arrays.asList()));
+				usuarioConverter.usuarioEntityToUsuarioModel(pedidoEntity.getUsuario(), Arrays.asList()));
+		pedidoModel.setProducto(productoConverter.productEntityToProductoModel(pedidoEntity.getProducto()));
 		return pedidoModel;
 	}
 
-	public List<PedidoEntity> pedidoModelToPedidoEntity(List<PedidoModel> pedidoModelList, List<String> relations) {
+	public List<PedidoEntity> pedidoModelToPedidoEntity(List<PedidoModel> pedidoModelList) {
 
 		List<PedidoEntity> models = new ArrayList<>();
 
 		for (PedidoModel pedidoModel : pedidoModelList) {
-			models.add(this.pedidoModelToPedidoEntity(pedidoModel, relations));
+			models.add(this.pedidoModelToPedidoEntity(pedidoModel));
 		}
 
 		return models;
 	}
 
-	public List<PedidoModel> pedidoEntityToPedidoModel(List<PedidoEntity> pedidoEntityList, List<String> relations) {
+	public List<PedidoModel> pedidoEntityToPedidoModel(List<PedidoEntity> pedidoEntityList) {
 
 		List<PedidoModel> models = new ArrayList<>();
 
 		for (PedidoEntity pedidoEntity: pedidoEntityList) {
-			models.add(this.pedidoEntityToPedidoModel(pedidoEntity, relations));
+			models.add(this.pedidoEntityToPedidoModel(pedidoEntity));
 		}
 
 		return models;

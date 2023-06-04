@@ -1,10 +1,11 @@
 package com.artek.fooddelivery.catalogos.productos;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.artek.fooddelivery.catalogos.pedidos.PedidoModel;
-import com.artek.fooddelivery.catalogos.tienda.TiendaEntity;
+import com.artek.fooddelivery.catalogos.tienda.TiendaModel;
 
 
 public class ProductoModel implements Serializable{
@@ -19,7 +20,9 @@ public class ProductoModel implements Serializable{
 	
 	private double precio;
 	
-	private List<TiendaEntity> tienda;
+	private String image;
+	
+	private List<TiendaModel> tienda = new ArrayList<>();
 
 	private boolean habilitado;
 	
@@ -31,7 +34,7 @@ public class ProductoModel implements Serializable{
 	}
 
 
-	public ProductoModel(Long id, String nombre, String tipo, double precio, List<TiendaEntity> tienda,
+	public ProductoModel(Long id, String nombre, String tipo, double precio, List<TiendaModel> tienda,
 			boolean habilitado, List<PedidoModel> pedido) {
 		super();
 		this.id = id;
@@ -56,6 +59,16 @@ public class ProductoModel implements Serializable{
 
 	public String getNombre() {
 		return nombre;
+	}
+
+
+	public String getImage() {
+		return image;
+	}
+
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 
@@ -84,12 +97,12 @@ public class ProductoModel implements Serializable{
 	}
 
 
-	public List<TiendaEntity> getTienda() {
+	public List<TiendaModel> getTienda() {
 		return tienda;
 	}
 
 
-	public void setTienda(List<TiendaEntity> tienda) {
+	public void setTienda(List<TiendaModel> tienda) {
 		this.tienda = tienda;
 	}
 

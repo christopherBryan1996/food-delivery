@@ -43,7 +43,7 @@ public class UsuarioRestController {
 		UsuarioEntity usuarioEntity = usuarioConverter.usuarioModelToUsuarioEntity(usuarioModel, Arrays.asList());
 		
 		usuarioEntity.setId(id);
-		
+		usuarioEntity.setHabilitado(true);
 		usuarioModel = usuarioConverter.usuarioEntityToUsuarioModel(usuarioService.create(usuarioEntity), Arrays.asList());
 		
 		return new ResponseEntity<Object>(usuarioModel,HttpStatus.ACCEPTED);

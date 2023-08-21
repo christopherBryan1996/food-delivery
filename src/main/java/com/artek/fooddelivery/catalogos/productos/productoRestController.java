@@ -6,9 +6,12 @@ import java.nio.file.Paths;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import jakarta.servlet.ServletContext;
 
 @CrossOrigin(origins= {"*"})
 @RestController
@@ -21,8 +24,11 @@ public class productoRestController {
 	@Autowired 
 	private ProductoService productoService;
 	
+	@Autowired
+	private ServletContext servletContext;
+	
 	@PostMapping("/productos")
-	public ResponseEntity<Object> create(@RequestBody ProductoModel productoModel){	
+	public ResponseEntity<Object> create(@RequestBody ProductoModel productoModel, @RequestParam("file") MultipartFile image){	
 		
 		ProductoEntity productoEntity = productoConverter.productoModelToProductoEntity(productoModel);
 		
@@ -37,21 +43,33 @@ public class productoRestController {
 		ProductoEntity productoEntity = productoService.view(id);
 		
 		if(!image.isEmpty()) {
-			java.nio.file.Path directorioImagenes =  Paths.get("src//main//resources//static/images");
-			String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
-			try {
-				byte[] bytesImg = image.getBytes();
-				java.nio.file.Path rutacompleta = Paths.get(rutaAbsoluta + "//" + image.getOriginalFilename());
-				Files.write(rutacompleta, bytesImg);
+	        MediaType contentType = MediaType.parseMediaType(image.getContentType());
+	        System.out.println(	contentType);
+	        
+	        //if(contentType.equals(MediaType.IMAGE_PNG) || contentType.equals(MediaType.IMAGE_JPEG) || contentType.equals(MediaType.APPLICATION_PDF)) {
+		    if(contentType.equals(MediaType.IMAGE_PNG) || contentType.equals(MediaType.IMAGE_JPEG)) {
+
+	        	java.nio.file.Path directorioImagenes =  Paths.get("src//main//resources//static/images");
+				String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
+				try {
+					byte[] bytesImg = image.getBytes();
+					java.nio.file.Path rutacompleta = Paths.get(rutaAbsoluta + "//" + image.getOriginalFilename());
+					Files.write(rutacompleta, bytesImg);
+					String contextPath = servletContext.getContextPath();
+					String imageUrl = "http://localhost:8080" + contextPath + "/images/" + image.getOriginalFilename();
+					productoEntity.setImage(imageUrl);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+	        }else {
+	            return new ResponseEntity<>("Tipo de archivo no permitido.", HttpStatus.BAD_REQUEST);
+	        }
+
 			
-				productoEntity.setImage(rutaAbsoluta+"//"+image.getOriginalFilename());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		}
 		
 		productoService.create(productoEntity);
-		return new ResponseEntity<Object>("d",HttpStatus.CREATED);
+		return new ResponseEntity<Object>("Archivo cargado exitosamente.",HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/productos/{id}")

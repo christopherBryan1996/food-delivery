@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import jakarta.servlet.ServletContext;
 
@@ -41,10 +42,11 @@ public class productoRestController {
 	public ResponseEntity<Object> createi(@RequestParam("file") MultipartFile image,@PathVariable Long id){
 		
 		ProductoEntity productoEntity = productoService.view(id);
+		//System.out.println(ServletUriComponentsBuilder.fromCurrentContextPath().build().toString());
 		
 		if(!image.isEmpty()) {
 	        MediaType contentType = MediaType.parseMediaType(image.getContentType());
-	        System.out.println(	contentType);
+	        //System.out.println(	contentType);
 	        
 	        //if(contentType.equals(MediaType.IMAGE_PNG) || contentType.equals(MediaType.IMAGE_JPEG) || contentType.equals(MediaType.APPLICATION_PDF)) {
 		    if(contentType.equals(MediaType.IMAGE_PNG) || contentType.equals(MediaType.IMAGE_JPEG)) {
@@ -52,11 +54,13 @@ public class productoRestController {
 	        	java.nio.file.Path directorioImagenes =  Paths.get("src//main//resources//static/images");
 				String rutaAbsoluta = directorioImagenes.toFile().getAbsolutePath();
 				try {
+					
 					byte[] bytesImg = image.getBytes();
 					java.nio.file.Path rutacompleta = Paths.get(rutaAbsoluta + "//" + image.getOriginalFilename());
 					Files.write(rutacompleta, bytesImg);
+					String urlDina=ServletUriComponentsBuilder.fromCurrentContextPath().build().toString();
 					String contextPath = servletContext.getContextPath();
-					String imageUrl = "http://localhost:8080" + contextPath + "/images/" + image.getOriginalFilename();
+					String imageUrl = urlDina + contextPath + "/images/" + image.getOriginalFilename();
 					productoEntity.setImage(imageUrl);
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -77,6 +81,6 @@ public class productoRestController {
 		
 		ProductoEntity productoEntity = productoService.view(id);
 		ProductoModel productoModel = productoConverter.productEntityToProductoModel(productoEntity);
-		return new ResponseEntity<Object>(productoModel,HttpStatus.CREATED);
+		return new ResponseEntity<Object>(productoModel,HttpStatus.OK);
 	}
 }

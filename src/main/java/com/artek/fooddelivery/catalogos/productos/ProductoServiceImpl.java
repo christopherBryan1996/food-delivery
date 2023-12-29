@@ -37,7 +37,7 @@ public class ProductoServiceImpl implements ProductoService{
 
 	@Override
 	public List<ProductoEntity> list() {
-		return null;
+		return productoRepository.findAll();
 	}
 
 	@Override
